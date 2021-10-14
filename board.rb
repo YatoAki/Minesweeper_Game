@@ -100,6 +100,14 @@ class Board
         end
     end
 
+    def reveal_adjacents(pos)
+        row,column = pos
+        area = neighbour(row,column)
+        area.each do |tile|
+            tile.reveal if tile.neighbour_bombs_count == 0
+        end
+    end
+
     def destroyed?
         @grid.each do |rows|
             return true if rows.any? {|tile| tile.bombed && tile.revealed}

@@ -3,6 +3,7 @@ require_relative 'board.rb'
 class Game
     attr_reader :board
     def initialize
+        system("clear")
         @level = get_level
         @board = Board.new(@level)
     end
@@ -35,7 +36,6 @@ class Game
 
     def play_turn
         system("clear")
-        board.cheat
         board.render
         pos = get_pos
         val = get_val
@@ -99,7 +99,7 @@ class Game
             @board[pos].flag
         when 'r'
             @board[pos].reveal
-            #reveal_adjacents(pos)
+            @board.reveal_adjacents(pos)
         when 'x'
             @board[pos].unflag
         end
