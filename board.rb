@@ -1,4 +1,5 @@
 require_relative 'tile.rb'
+require 'byebug'
 class Board
     attr_reader :grid,:height,:width,:bombs
     def initialize(level)
@@ -55,25 +56,52 @@ class Board
                 elsif ele.flagged
                     print " F "
                 else
-                    print " * "
+                    print " #{ele.neighbour_bombs_count} "
                 end
             end
             puts
         end
     end
+
+    def valid_pos?(pos)
+        row, column = pos
+        row.between?(0,@width-1) && column.between?(0,@height-1)
+    end
+
+    def neighbour(i,j)
+        tiles = []
+        row = i - 1
+        column = j - 1
+        (row...(row+3)).each do |idx1|
+            (column...(column+3)).each do |idx2|
+                pos = [idx1,idx2]
+                tiles << self[pos] if valid_pos?(pos)
+            end
+        end
+        tiles
+    end
+
+    def bombs_count(area)
+        area.count{|ele| ele.explode?}
+    end
+    
+    def update_neighbour_bombs_count
+        @grid.each_with_index do |row,i|
+            row.each_with_index do |tile,j|
+                area = neighbour(i,j)
+                puts "for #{i},#{j}"
+                puts area.join(" ")
+                tile.neighbour_bombs_count = bombs_count(area)
+            end
+        end
+    end
 end
 
 if $PROGRAM_NAME == __FILE__
-    board = Board.new("easy")
+    board = Board.new("hard")
     board.place_random_bombs
-    puts "cheat & render"
     board.cheat
+    board.update_neighbour_bombs_count
     puts
-    board.render
-    board[[1,2]].flag
-    board[[1,3]].reveal
-    puts "cheat & render"
     board.cheat
-    puts
-    board.render
 end
