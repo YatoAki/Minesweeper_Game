@@ -1,7 +1,7 @@
 require 'colorize'
 
 class Tile
-    attr_reader :flagged,:revealed
+    attr_accessor :flagged,:revealed
     def initialize(bombed = false)
         @bombed = bombed
         @flagged  = false
