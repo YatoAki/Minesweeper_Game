@@ -15,7 +15,8 @@ class Tile
 
     def to_s
         return "F".colorize(:red) if @flagged
-        @revealed ? "_" : "*"
+        out = @neighbour_bombs_count > 0 ? @neighbour_bombs_count.to_s : "_"
+        @revealed ? out : "*"
     end
 
     def flag

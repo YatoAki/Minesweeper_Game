@@ -29,11 +29,13 @@ class Game
     def run
         system("clear")
         @board.place_random_bombs
+        @board.update_neighbour_bombs_count
         play_turn until game_over?
     end
 
     def play_turn
         system("clear")
+        board.cheat
         board.render
         pos = get_pos
         val = get_val
@@ -97,9 +99,9 @@ class Game
             @board[pos].flag
         when 'r'
             @board[pos].reveal
+            #reveal_adjacents(pos)
         when 'x'
             @board[pos].unflag
-            #reveal_adjacents(pos)
         end
     end
 

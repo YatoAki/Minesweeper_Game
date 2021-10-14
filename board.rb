@@ -95,8 +95,6 @@ class Board
         @grid.each_with_index do |row,i|
             row.each_with_index do |tile,j|
                 area = neighbour(i,j)
-                puts "for #{i},#{j}"
-                puts area.join(" ")
                 tile.neighbour_bombs_count = bombs_count(area)
             end
         end
