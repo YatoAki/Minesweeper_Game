@@ -11,6 +11,10 @@ class Board
             @height = 16
             @width = 16
             @bombs = 40
+        elsif level == "test"
+            @height = 6
+            @width = 10
+            @bombs = 9
         elsif level == "hard"
             @height = 16
             @width = 30
@@ -41,13 +45,15 @@ class Board
     end
 
     def render
+        puts "  #{(0...@width).to_a.join(" ")}"
         @grid.each do |row|
-            puts row.join(" ")
+            puts "#{i} #{row.join(" ")}"
         end
     end
 
     def cheat
-        @grid.each do |row|
+        puts " #{(0...@width).to_a.join("  ")}"
+        @grid.each_with_index do |row,i|
             row.each do |ele|
                 if ele.explode?
                     print " X "
@@ -65,7 +71,7 @@ class Board
 
     def valid_pos?(pos)
         row, column = pos
-        row.between?(0,@width-1) && column.between?(0,@height-1)
+        row.between?(0,@height-1) && column.between?(0,@width-1)
     end
 
     def neighbour(i,j)
@@ -101,6 +107,7 @@ if $PROGRAM_NAME == __FILE__
     board = Board.new("hard")
     board.place_random_bombs
     board.cheat
+    #debugger
     board.update_neighbour_bombs_count
     puts
     board.cheat
