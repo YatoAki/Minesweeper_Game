@@ -1,7 +1,7 @@
 require 'colorize'
 
 class Tile
-    attr_accessor :flagged,:revealed,:neighbour_bombs_count
+    attr_accessor :bombed,:flagged,:revealed,:neighbour_bombs_count
     def initialize(bombed = false)
         @bombed = bombed
         @flagged  = false
@@ -20,6 +20,10 @@ class Tile
 
     def flag
         @flagged = true
+    end
+
+    def unflag
+        @flagged = false
     end
 
     def explode?

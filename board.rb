@@ -46,7 +46,7 @@ class Board
 
     def render
         puts "  #{(0...@width).to_a.join(" ")}"
-        @grid.each do |row|
+        @grid.each_with_index do |row,i|
             puts "#{i} #{row.join(" ")}"
         end
     end
@@ -101,14 +101,28 @@ class Board
             end
         end
     end
+
+    def destroyed?
+        @grid.each do |rows|
+            return true if rows.any? {|tile| tile.bombed && tile.revealed}
+        end
+        return false
+    end
+
+    def cleared?
+        @grid.all? do |rows|
+            true if rows.all? {|tile| (tile.bombed && tile.flagged) || (tile.bombed == false)}
+        end
+    end
 end
 
 if $PROGRAM_NAME == __FILE__
-    board = Board.new("hard")
+    board = Board.new("easy")
     board.place_random_bombs
     board.cheat
     #debugger
     board.update_neighbour_bombs_count
     puts
     board.cheat
+    board.render
 end
